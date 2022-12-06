@@ -33,6 +33,13 @@ const Item = (props) => {
           {" "}
           Cost : {props.price}$
         </Text>
+
+
+        {/* Units Left*/}
+        <Text style={styles.text} numberOfLines={1}>
+          {" "}
+          units Left : {props.units}
+        </Text>
       </View>
     </TouchableOpacity>
   );

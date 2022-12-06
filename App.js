@@ -8,7 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
-  Image
+  Image,
 } from "react-native";
 import { Button, Dialog, CheckBox, ListItem, Avatar } from "@rneui/themed";
 import Item from "./Components/Item";
@@ -35,14 +35,8 @@ const App = () => {
   return (
     <View style={{ marginTop: b }}>
       <View>
-        <View
-          style={styles.outerView}
-        >
-          <Text
-            style={styles.heading}
-          >
-            Shopping
-          </Text>
+        <View style={styles.outerView}>
+          <Text style={styles.heading}>Shopping</Text>
         </View>
         <FlatList
           data={articles}
@@ -53,6 +47,7 @@ const App = () => {
               description={item.description}
               category={item.category}
               price={item.price}
+              units={item.rating.count}
               onPress={() => {
                 setVisible(() => true);
                 setData(() => item);
@@ -64,28 +59,31 @@ const App = () => {
         {data && (
           <Dialog isVisible={visible} onBackdropPress={toggleDialog}>
             <View>
-            <Image source={{ uri: data.image }} style={styles.image}/>
-            <Text style={{fontSize:18,fontWeight:"bold",color:"blue"}}>Description : </Text>
-            <Dialog.Title title={data.description} />
+              <Image source={{ uri: data.image }} style={styles.image} />
+              <Text style={{ fontSize: 18, fontWeight: "bold", color: "blue" }}>
+                Description :{" "}
+              </Text>
+              <Dialog.Title title={data.description} />
             </View>
 
             <View style={styles.container}>
-              <TouchableOpacity>
-            <View style={styles.cart}>
-              <Text style={styles.text}>Add to Cart</Text>
-            </View>
+              <TouchableOpacity
+                onPress={() => {
+                  data.rating.count = data.rating.count - 1;
+                  setVisible(!visible);
+                }}
+              >
+                <View style={styles.cart}>
+                  <Text style={styles.text}>Add to Cart</Text>
+                </View>
               </TouchableOpacity>
 
-            <TouchableOpacity
-            onPress={toggleDialog}
-            >
-            <View style={styles.cart1}>
-              <Text style={styles.text}>Close</Text>
+              <TouchableOpacity onPress={toggleDialog}>
+                <View style={styles.cart1}>
+                  <Text style={styles.text}>Close</Text>
+                </View>
+              </TouchableOpacity>
             </View>
-            </TouchableOpacity>
-
-            </View>
-            
           </Dialog>
         )}
       </View>
@@ -95,43 +93,42 @@ const App = () => {
 export default App;
 
 const styles = StyleSheet.create({
-  image:{
-    width:140,
-    height:140,
-    alignSelf:"center"
+  image: {
+    width: 140,
+    height: 140,
+    alignSelf: "center",
   },
-  text:{
-    fontSize:16,
-    fontWeight:"500",
-    textAlign:"center"
+  text: {
+    fontSize: 16,
+    fontWeight: "500",
+    textAlign: "center",
   },
-  cart:{
-    backgroundColor:"orange",
-    width:90,
-    height:30,
-    justifyContent:"center"
+  cart: {
+    backgroundColor: "orange",
+    width: 90,
+    height: 30,
+    justifyContent: "center",
+  },
 
+  cart1: {
+    backgroundColor: "grey",
+    width: 90,
+    height: 30,
+    justifyContent: "center",
   },
-
-  cart1:{
-    backgroundColor:"grey",
-    width:90,
-    height:30,
-    justifyContent:"center"
+  container: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-  container:{
-    flexDirection:"row",
-    justifyContent:"space-between"
+  heading: {
+    textAlign: "center",
+    fontWeight: "500",
+    fontSize: 28,
   },
-  heading:{
-    textAlign: "center", 
-    fontWeight: "500", 
-    fontSize: 28
-  },
-  outerView:{
+  outerView: {
     marginBottom: 10,
     margingLeft: 20,
     marginRight: 10,
     borderRadius: 10,
-  }
-})
+  },
+});
